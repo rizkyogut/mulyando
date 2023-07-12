@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">mulyando</string>
+    <string name="lets_sign_you_in">Lets Sign you in</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="phone">Phone</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="otp_verification">OTP Verification</string>
+    <string name="_0">0</string>
+    <string name="resend_otp">Resend OTP</string>
+</resources>
