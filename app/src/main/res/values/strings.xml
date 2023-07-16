@@ -7,4 +7,16 @@
     <string name="otp_verification">OTP Verification</string>
     <string name="_0">0</string>
     <string name="resend_otp">Resend OTP</string>
+    <string name="profile">Profile</string>
+
+    <string name="home">Home</string>
+    <string name="bantuan">Bantuan</string>
+    <string name="setting">Setting</string>
+    <string name="riwayat_pekerjaan">Riwayat Pekerjaan</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="hello_blank_fragment">Hallo World</string>
+    <string name="action_settings">Settings</string>
+    <string name="notification">Notification</string>
+
 </resources>
