@@ -5,20 +5,20 @@
         android:title="@string/profile">
         <menu>
             <item
-                android:id="@+id/riwayat_pekerjaan"
+                android:id="@+id/nav_riwayat_pekerjaan"
                 android:checkable="true"
                 android:icon="@drawable/baseline_history_24"
-                android:title="Riwayat Pekerjaan" />
+                android:title="@string/riwayat_pekerjaan" />
             <item
-                android:id="@+id/bantuan"
+                android:id="@+id/nav_bantuan"
                 android:checkable="true"
                 android:icon="@drawable/baseline_help_outline_24"
-                android:title="Bantuan" />
+                android:title="@string/bantuan" />
             <item
-                android:id="@+id/favourites_item"
+                android:id="@+id/nav_setting"
                 android:checkable="true"
                 android:icon="@drawable/outline_settings_24"
-                android:title="Pengaturan" />
+                android:title="@string/setting" />
         </menu>
     </item>
 </menu>

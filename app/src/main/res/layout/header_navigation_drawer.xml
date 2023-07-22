@@ -9,7 +9,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/navigation_background_image"
+        android:id="@+id/background_image"
         android:gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/side_nav_bar" />
 
     <ImageView
-        android:id="@+id/navigation_profile_image"
+        android:id="@+id/nav_profile"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_gravity="center_vertical"

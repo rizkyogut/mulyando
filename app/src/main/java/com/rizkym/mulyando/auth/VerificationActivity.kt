@@ -1,4 +1,4 @@
-package com.rizkym.mulyando
+package com.rizkym.mulyando.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.rizkym.mulyando.MainActivity
 import com.rizkym.mulyando.databinding.ActivityVerificationBinding
 import java.util.concurrent.TimeUnit
 
@@ -52,12 +53,14 @@ class VerificationActivity : AppCompatActivity() {
 
         binding.resendOTP.setOnClickListener {
 
+            showLoading(true)
+
             val options = PhoneAuthOptions.newBuilder(auth)
-                .setPhoneNumber(phoneNumber)       // Phone number to verify
-                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(this)                 // Activity (for callback binding)
+                .setPhoneNumber(phoneNumber)                 // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS)   // Timeout and unit
+                .setActivity(this)                          // Activity (for callback binding)
                 .setCallbacks(callbacks)
-                .setForceResendingToken(resendToken)// OnVerificationStateChangedCallbacks
+                .setForceResendingToken(resendToken)       // OnVerificationStateChangedCallbacks
                 .build()
             PhoneAuthProvider.verifyPhoneNumber(options)
 
@@ -71,28 +74,29 @@ class VerificationActivity : AppCompatActivity() {
         }
 
         binding.button.setOnClickListener {
-            val otp = (inputOTP1.text.toString() + inputOTP2.text.toString() + inputOTP3.text.toString()
-                    + inputOTP4.text.toString() + inputOTP5.text.toString() + inputOTP6.text.toString())
 
-            if (otp.length != 6){
-                Toast.makeText(this, "Please Enter Correct OTP", Toast.LENGTH_SHORT).show()
-            }
+            showLoading(true)
 
-            if (otp.isNotEmpty()) {
+            val otp =
+                (inputOTP1.text.toString() + inputOTP2.text.toString() + inputOTP3.text.toString()
+                        + inputOTP4.text.toString() + inputOTP5.text.toString() + inputOTP6.text.toString())
+
+            if (otp.length == 6) {
                 val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(
                     OTP, otp
                 )
                 signInWithPhoneAuthCredential(credential)
             } else {
-                Toast.makeText(this, "Please Enter OTP", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please Enter Correct OTP", Toast.LENGTH_SHORT).show()
             }
 
-            if (otp.length != 6){
-                Toast.makeText(this, "Please Enter Correct OTP", Toast.LENGTH_SHORT).show()
+            if (otp.isEmpty()) {
+                Toast.makeText(this, "Please Enter OTP", Toast.LENGTH_SHORT).show()
             }
         }
 
     }
+
     private fun initView() {
         inputOTP1 = binding.otpEditText1
         inputOTP2 = binding.otpEditText2
@@ -166,6 +170,7 @@ class VerificationActivity : AppCompatActivity() {
             // Save verification ID and resending token so we can use them later
             OTP = verificationId
             resendToken = token
+            showLoading(false)
         }
     }
 
@@ -181,13 +186,20 @@ class VerificationActivity : AppCompatActivity() {
                     Log.d("TAG", "signInWithPhoneAuthCredential: ${task.exception.toString()}")
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
+                        Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
                     // Update UI
                 }
+
+                showLoading(false)
             }
     }
 
     private fun intentMain() {
         startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

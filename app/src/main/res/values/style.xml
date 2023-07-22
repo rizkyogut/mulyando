@@ -31,4 +31,11 @@
         <item name="font">@font/roboto_regular</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="titleListItem">
+        <item name="android:textSize">14sp</item>
+        <item name="font">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

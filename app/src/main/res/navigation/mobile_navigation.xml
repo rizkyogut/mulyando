@@ -8,18 +8,13 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.rizkym.mulyando.home.HomeFragment"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/nav_profile"
-        android:name="com.rizkym.mulyando.ProfileFragment"
-        android:label="@string/profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_home" >
+    </fragment>
 
     <fragment
         android:id="@+id/nav_riwayat_pekerjaan"
         android:name="com.rizkym.mulyando.riwayatperbaikan.RiwayatPekerjaanFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/riwayat_pekerjaan"
         tools:layout="@layout/fragment_riwayat_pekerjaan" />
 
     <fragment
@@ -33,5 +28,4 @@
         android:name="com.rizkym.mulyando.setting.SettingFragment"
         android:label="@string/setting"
         tools:layout="@layout/fragment_setting" />
-
 </navigation>
