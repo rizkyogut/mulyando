@@ -15,17 +15,23 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.rizkym.mulyando.MainActivity
 import com.rizkym.mulyando.databinding.ActivityVerificationBinding
 import java.util.concurrent.TimeUnit
 
 class VerificationActivity : AppCompatActivity() {
 
+
     private lateinit var binding: ActivityVerificationBinding
+
     lateinit var auth: FirebaseAuth
+    private var user: FirebaseUser? = null
 
     private lateinit var inputOTP1: EditText
     private lateinit var inputOTP2: EditText
@@ -48,6 +54,7 @@ class VerificationActivity : AppCompatActivity() {
         phoneNumber = intent.getStringExtra("phoneNumber")!!
 
         auth = FirebaseAuth.getInstance()
+        user = Firebase.auth.currentUser
 
         initView()
 
@@ -180,7 +187,7 @@ class VerificationActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Toast.makeText(this, "Authenticate Successfully", Toast.LENGTH_SHORT).show()
-                    intentMain()
+                    intent()
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.d("TAG", "signInWithPhoneAuthCredential: ${task.exception.toString()}")
@@ -195,8 +202,14 @@ class VerificationActivity : AppCompatActivity() {
             }
     }
 
-    private fun intentMain() {
-        startActivity(Intent(this, MainActivity::class.java))
+    private fun intent() {
+        if (user?.displayName?.isEmpty() == null) {
+            val intent = Intent(this@VerificationActivity, CreatedTeknisiActivity::class.java)
+            intent.putExtra("phoneNumber", phoneNumber)
+            startActivity(intent)
+        } else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

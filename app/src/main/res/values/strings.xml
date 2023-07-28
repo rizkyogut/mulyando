@@ -24,5 +24,7 @@
     <string name="phoneNumber">0895123123</string>
     <string name="log_out">Log Out</string>
     <string name="call_teknisi_center">Call Teknisi Center</string>
+    <string name="photo_profile">Photo Profile</string>
+    <string name="sign_in">Sign In</string>
 
 </resources>
