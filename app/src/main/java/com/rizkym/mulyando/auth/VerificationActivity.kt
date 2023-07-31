@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit
 
 class VerificationActivity : AppCompatActivity() {
 
-
     private lateinit var binding: ActivityVerificationBinding
 
     lateinit var auth: FirebaseAuth
@@ -203,13 +202,9 @@ class VerificationActivity : AppCompatActivity() {
     }
 
     private fun intent() {
-        if (user?.displayName?.isEmpty() == null) {
-            val intent = Intent(this@VerificationActivity, CreatedTeknisiActivity::class.java)
-            intent.putExtra("phoneNumber", phoneNumber)
-            startActivity(intent)
-        } else {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
+        val intent = Intent(this@VerificationActivity, MainActivity::class.java)
+        intent.putExtra("phoneNumber", phoneNumber)
+        startActivity(intent)
     }
 
     private fun showLoading(isLoading: Boolean) {

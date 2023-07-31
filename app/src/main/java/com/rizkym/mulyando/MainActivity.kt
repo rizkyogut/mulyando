@@ -3,6 +3,7 @@ package com.rizkym.mulyando
 import android.app.ProgressDialog.show
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
@@ -17,8 +18,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.rizkym.mulyando.auth.CreatedTeknisiActivity
 import com.rizkym.mulyando.bantuan.BantuanFragment
 import com.rizkym.mulyando.databinding.ActivityMainBinding
+import com.rizkym.mulyando.model.Teknisi
 import com.rizkym.mulyando.profile.ProfileActivity
 import com.rizkym.mulyando.setting.SettingFragment
 
@@ -30,14 +39,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var navView: NavigationView
 
+    private val database: FirebaseDatabase = FirebaseDatabase.getInstance(BuildConfig.URL_FIREBASE)
+    private val myReference: DatabaseReference = database.reference.child("MyTeknisi")
+
+    private var phoneNumber: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        checkData()
+
         val toolbar = binding.appBarMain.toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.title = ""
+
+        phoneNumber = intent.getStringExtra("phoneNumber")
 
         drawerLayout = binding.drawerLayout
 
@@ -62,6 +80,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private fun checkData() {
+        val user = FirebaseAuth.getInstance().currentUser
+
+        user?.let {
+
+            val uid = it.uid
+
+            myReference.child(uid)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                            val intent =
+                                Intent(this@MainActivity, CreatedTeknisiActivity::class.java)
+                            intent.putExtra("phoneNumber", phoneNumber)
+                            startActivity(intent)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_riwayat_pekerjaan -> {
@@ -73,6 +114,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val bantuanFragment = BantuanFragment()
                 show(bantuanFragment)
             }
+
             R.id.nav_setting -> {
                 val settingFragment = SettingFragment()
                 show(settingFragment)
@@ -95,6 +137,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(applicationContext, "Hello", Toast.LENGTH_LONG).show()
                 true
             }
+
             else -> true
         }
     }
@@ -111,4 +154,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawerLayout.closeDrawer(GravityCompat.START)
     }
+
 }

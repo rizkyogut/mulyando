@@ -42,7 +42,6 @@ class LoginActivity : AppCompatActivity() {
             if (phoneNumber.length >= 9) {
 
                 showLoading(true)
-
                 phoneNumber = "+62$phoneNumber"
 
                 val options = PhoneAuthOptions.newBuilder(auth)

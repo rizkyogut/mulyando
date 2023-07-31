@@ -16,6 +16,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "URL_FIREBASE", '"https://mulyando-cc56c-default-rtdb.asia-southeast1.firebasedatabase.app/"')
     }
 
     buildTypes {
@@ -33,6 +34,9 @@ android {
     }
     viewBinding {
         enabled = true
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 

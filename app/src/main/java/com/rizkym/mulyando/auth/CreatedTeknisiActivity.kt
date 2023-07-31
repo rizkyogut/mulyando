@@ -1,6 +1,7 @@
 package com.rizkym.mulyando.auth
 
 import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -11,11 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.rizkym.mulyando.BuildConfig
+import com.rizkym.mulyando.MainActivity
 import com.rizkym.mulyando.databinding.ActivityCreatedTeknisiBinding
 import com.rizkym.mulyando.model.Teknisi
 import java.util.UUID
@@ -24,18 +27,14 @@ class CreatedTeknisiActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreatedTeknisiBinding
 
-    private var phoneNumber: String? = null
-    private var textPhone: String? = null
-
-    private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private val myReference: DatabaseReference = database.reference.child("users")
-
-    private var user: FirebaseUser? = null
+    private val database: FirebaseDatabase = FirebaseDatabase.getInstance(BuildConfig.URL_FIREBASE)
+    private val myReference: DatabaseReference = database.reference.child("MyTeknisi")
 
     private val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
     private val storageReference: StorageReference = firebaseStorage.reference
 
     private var imageUri: Uri? = null
+    private var phoneNumber: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,18 +42,20 @@ class CreatedTeknisiActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         phoneNumber = intent.getStringExtra("phoneNumber")!!
-        textPhone = binding.textPhone.setText(phoneNumber).toString()
+        binding.textPhone.setText(phoneNumber).toString()
 
         binding.photoProfile.setOnClickListener {
             startImagePicker()
         }
 
         binding.button.setOnClickListener {
-            createTeknisiUser(textPhone!!)
+            createTeknisiUser()
         }
     }
 
     private fun startImagePicker() {
+        showLoading(true)
+
         ImagePicker.with(this)
             .cameraOnly()
             .crop()                   //Crop image(Optional), Check Customization for more option
@@ -74,15 +75,11 @@ class CreatedTeknisiActivity : AppCompatActivity() {
                     //Image Uri will not be null for RESULT_OK
                     imageUri = data?.data!!
 
-                    showLoading(true)
-
                     // Use Uri object instead of File to avoid storage permissions
                     Glide.with(this)
                         .load(imageUri)
                         .apply(RequestOptions.circleCropTransform())
                         .into(binding.photoProfile)
-
-                    showLoading(false)
 
                     binding.imageView3.visibility = View.GONE
                 }
@@ -95,12 +92,14 @@ class CreatedTeknisiActivity : AppCompatActivity() {
                     Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            showLoading(false)
         }
 
-    private fun createTeknisiUser(textPhone: String) {
+    private fun createTeknisiUser() {
 
         binding.button.isClickable = false
-        binding.progressBar.visibility = View.VISIBLE
+        showLoading(true)
 
         //UUID
         val imageName = UUID.randomUUID().toString()
@@ -116,7 +115,7 @@ class CreatedTeknisiActivity : AppCompatActivity() {
                 myUploadedImageReference.downloadUrl.addOnSuccessListener { url ->
 
                     val imageURL = url.toString()
-                    addTeknisiToDatabase(imageURL, imageName, textPhone)
+                    addTeknisiToDatabase(imageURL, imageName)
 
                 }
             }.addOnFailureListener {
@@ -126,25 +125,29 @@ class CreatedTeknisiActivity : AppCompatActivity() {
         }
     }
 
-    private fun addTeknisiToDatabase(imageURL: String, imageName: String, textPhone: String) {
+    private fun addTeknisiToDatabase(imageURL: String, imageName: String) {
         val name: String = binding.textName.text.toString()
-        val id: String = myReference.push().key.toString()
 
-        val teknisi = Teknisi(id, name, textPhone, imageURL, imageName)
+        val user = FirebaseAuth.getInstance().currentUser
+        val teknisi = Teknisi(name, phoneNumber, imageURL, imageName)
 
-        myReference.child(id).setValue(teknisi).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(
-                    applicationContext, "The new user has been added to the database",
-                    Toast.LENGTH_SHORT
-                ).show()
-                binding.button.isClickable = true
-                binding.progressBar.visibility = View.INVISIBLE
-                finish()
-            } else {
-                Toast.makeText(
-                    applicationContext, task.exception.toString(), Toast.LENGTH_SHORT
-                ).show()
+        user?.let {
+            myReference.child(it.uid).setValue(teknisi).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(
+                        applicationContext, "The new Teknisi has been added to the database",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.button.isClickable = true
+                    binding.progressBar.visibility = View.INVISIBLE
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        applicationContext, task.exception.toString(), Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
