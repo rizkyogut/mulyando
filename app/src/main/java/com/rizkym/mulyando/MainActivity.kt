@@ -1,6 +1,6 @@
 package com.rizkym.mulyando
 
-import android.app.ProgressDialog.show
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,10 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -27,9 +23,12 @@ import com.google.firebase.database.ValueEventListener
 import com.rizkym.mulyando.auth.CreatedTeknisiActivity
 import com.rizkym.mulyando.bantuan.BantuanFragment
 import com.rizkym.mulyando.databinding.ActivityMainBinding
+import com.rizkym.mulyando.home.HomeFragment
 import com.rizkym.mulyando.model.Teknisi
-import com.rizkym.mulyando.profile.ProfileActivity
+import com.rizkym.mulyando.profile.ProfileFragment
 import com.rizkym.mulyando.setting.SettingFragment
+import com.rizkym.mulyando.utils.setImageBackground
+import com.rizkym.mulyando.utils.setImageProfile
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,6 +42,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val myReference: DatabaseReference = database.reference.child("MyTeknisi")
 
     private var phoneNumber: String? = null
+    private var title : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val toolbar = binding.appBarMain.toolbar
         setSupportActionBar(toolbar)
-        supportActionBar?.title = ""
 
         phoneNumber = intent.getStringExtra("phoneNumber")
 
@@ -69,15 +68,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView = binding.navigationView
         navView.setNavigationItemSelectedListener(this)
-
-        val headerView = navView.getHeaderView(0)
-        val profileImage = headerView.findViewById<ImageView>(R.id.nav_profile)
-        val backgroundProfile = headerView.findViewById<ImageView>(R.id.background_image)
-
-        profileImage.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     private fun checkData() {
@@ -90,7 +80,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             myReference.child(uid)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        if (!dataSnapshot.exists()) {
+                        if (dataSnapshot.exists()) {
+                            val teknisi = dataSnapshot.getValue(Teknisi::class.java)
+                            viewData(teknisi)
+                        } else {
                             val intent =
                                 Intent(this@MainActivity, CreatedTeknisiActivity::class.java)
                             intent.putExtra("phoneNumber", phoneNumber)
@@ -98,13 +91,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                     }
 
-                    override fun onCancelled(error: DatabaseError) {}
+                    override fun onCancelled(error: DatabaseError) {
+                        // Getting Post failed, log a message
+                        Log.w(TAG, "loadPost:onCancelled", error.toException())
+                    }
                 })
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.nav_home -> {
+                val homeFragment = HomeFragment()
+                title = resources.getString(R.string.app_name)
+                show(homeFragment, title)
+            }
+
             R.id.nav_riwayat_pekerjaan -> {
                 Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
                 return true
@@ -112,12 +114,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.nav_bantuan -> {
                 val bantuanFragment = BantuanFragment()
-                show(bantuanFragment)
+                title = resources.getString(R.string.bantuan)
+                show(bantuanFragment, title)
             }
 
             R.id.nav_setting -> {
                 val settingFragment = SettingFragment()
-                show(settingFragment)
+                title = resources.getString(R.string.setting)
+                show(settingFragment, title)
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -142,10 +146,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun show(fragment: Fragment) {
+    private fun show(fragment: Fragment, title: String?) {
 
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         val fragmentManager = supportFragmentManager
+        supportActionBar?.title = title
 
         fragmentManager
             .beginTransaction()
@@ -153,6 +158,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .commit()
 
         drawerLayout.closeDrawer(GravityCompat.START)
+    }
+
+    private fun viewData(teknisi: Teknisi?) {
+        val headerView = navView.getHeaderView(0)
+        val profileImage = headerView.findViewById<ImageView>(R.id.nav_profile)
+        val backgroundProfile = headerView.findViewById<ImageView>(R.id.background_image)
+        val headerMenu = navView.menu.findItem(R.id.main_item)
+
+        teknisi?.url.let { profileImage.setImageProfile(it) }
+        teknisi?.url.let { backgroundProfile.setImageBackground(it) }
+        headerMenu.title = teknisi?.name
+
+        profileImage.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable("DATA_TEKNISI", teknisi)
+
+            val profileFragment = ProfileFragment()
+            profileFragment.arguments = bundle
+
+            title = resources.getString(R.string.profile)
+            show(profileFragment, title)
+        }
     }
 
 }

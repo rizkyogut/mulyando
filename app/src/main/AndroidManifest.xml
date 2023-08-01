@@ -23,9 +23,6 @@
             android:exported="false" >
         </activity>
         <activity
-            android:name=".profile.ProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".auth.VerificationActivity"
             android:exported="false" />
         <activity
