@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.rizkym.mulyando.R
 import com.rizkym.mulyando.databinding.FragmentProfileBinding
 import com.rizkym.mulyando.model.Teknisi
 import com.rizkym.mulyando.utils.setImageProfile

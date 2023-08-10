@@ -49,8 +49,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        checkData()
-
         val toolbar = binding.appBarMain.toolbar
         setSupportActionBar(toolbar)
 
@@ -68,6 +66,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView = binding.navigationView
         navView.setNavigationItemSelectedListener(this)
+
+        checkData()
     }
 
     private fun checkData() {

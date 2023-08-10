@@ -26,5 +26,36 @@
     <string name="call_teknisi_center">Call Teknisi Center</string>
     <string name="photo_profile">Photo Profile</string>
     <string name="sign_in">Sign In</string>
+    <string name="rizky">Rizky</string>
+    <string name="starbuck_kokas_mall_kota_kasablangka">Starbuck Kokas, Mall Kota Kasablangka</string>
+    <string name="addressExample">Jl. Raya Casablanca Raya No. Kav. 88, Menteng Dalam, Kec. Tebet, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12870</string>
+    <string name="kerusakan">Kerusakan</string>
+    <string name="machineExample">Getra Coffee Machine ME-720, Saeco</string>
+    <string name="diagnosisExample">Selang Bocor</string>
+    <string name="perbaikan">Perbaikan</string>
+    <string name="rincian">Rincian</string>
+    <string name="waktu_perbaikan">Waktu Perbaikan</string>
+    <string name="no_pesanan">No Pesanan</string>
+    <string name="nama_mesin">Nama Mesin</string>
+    <string name="noKerusakanExample">1j2bo1jjsakd</string>
+    <string name="_17_june">17 June</string>
+    <string name="no_kerusakan">No Kerusakan</string>
+    <string name="inputPerbaikan">Input Perbaikan</string>
+    <string name="call_user">Call User</string>
+    <string name="icon_rincian">Icon Rincian</string>
+    <string name="edit">Edit</string>
+    <string name="icon_perbaikan">Icon Perbaikan</string>
+    <string name="icon_kerusakan">Icon Kerusakan</string>
+    <string name="icon_profile">Icon Profile\n</string>
+    <string name="icon_place">Icon Place</string>
+    <string name="direction">Direction</string>
+    <string name="back">Back</string>
+    <string name="img_splash">Splash Image</string>
+    <string name="done">Done</string>
+    <string name="images">Images</string>
+    <string name="tanggal">Tanggal</string>
+    <string name="status">Status</string>
+    <string name="test">TEST</string>
+    <string name="perbaikan_selesai">Perbaikan Selesai</string>
 
 </resources>

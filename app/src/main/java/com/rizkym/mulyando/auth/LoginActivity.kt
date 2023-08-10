@@ -140,13 +140,6 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (auth.currentUser != null) {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-    }
-
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }

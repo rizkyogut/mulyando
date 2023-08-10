@@ -48,7 +48,7 @@ class VerificationActivity : AppCompatActivity() {
         binding = ActivityVerificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        OTP = intent.getStringExtra("OTP").toString()
+        OTP = intent.getStringExtra("OTP")!!
         resendToken = intent.getParcelableExtra("resendToken")!!
         phoneNumber = intent.getStringExtra("phoneNumber")!!
 

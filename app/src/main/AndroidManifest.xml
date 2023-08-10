@@ -19,14 +19,10 @@
         android:theme="@style/Theme.Mulyando"
         tools:targetApi="31">
         <activity
-            android:name=".auth.CreatedTeknisiActivity"
-            android:exported="false" >
-        </activity>
-        <activity
-            android:name=".auth.VerificationActivity"
+            android:name=".home.detail.InputPerbaikanActivity"
             android:exported="false" />
         <activity
-            android:name=".auth.LoginActivity"
+            android:name=".SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +31,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".home.detail.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.CreatedTeknisiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.VerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD80Nb7jIhSZ0QXdmxkOrfMsNzQSn-8Q6Y" />
     </application>
 
 </manifest>

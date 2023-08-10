@@ -32,13 +32,29 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="titleListItem">
-        <item name="android:textSize">14sp</item>
-        <item name="font">@font/roboto_regular</item>
-        <item name="android:textColor">@color/black</item>
+    <style name="defaultTextBold" parent="defaultText">
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="subText">
+        <item name="android:textSize">14sp</item>
+        <item name="font">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="subTextBold" parent="subText">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CardViewDetail">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:fillColor">@color/md_theme_light_surfaceContainerLow</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+    
     <style name="Circular">
         <item name="cornerSize">50%</item>
     </style>
