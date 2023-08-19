@@ -3,19 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".riwayatperbaikan.RiwayatPekerjaanFragment">
+    tools:context=".home.tabs.KerusakanFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvRiwayat"
+        android:id="@+id/rvKerusakan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/card_view_main"/>
-
+    
     <ImageView
         android:id="@+id/ivNoData"
         android:layout_width="290dp"
         android:layout_height="290dp"
         android:layout_gravity="center"
         android:visibility="invisible"
-        android:src="@drawable/no_data_history"/>
+        android:src="@drawable/no_data"/>
+    
 </FrameLayout>

@@ -1,4 +1,4 @@
-package com.rizkym.mulyando.riwayatperbaikan
+package com.rizkym.mulyando.home.tabs
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,14 +15,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.rizkym.mulyando.BuildConfig
-import com.rizkym.mulyando.databinding.FragmentRiwayatPekerjaanBinding
+import com.rizkym.mulyando.databinding.FragmentKerusakanBinding
 import com.rizkym.mulyando.home.MainAdapter
 import com.rizkym.mulyando.home.detail.DetailActivity
 import com.rizkym.mulyando.model.Data
 
-class RiwayatPekerjaanFragment : Fragment(), MainAdapter.DataCallback  {
+class KerusakanFragment : Fragment(), MainAdapter.DataCallback {
 
-    private var _binding: FragmentRiwayatPekerjaanBinding? = null
+    private var _binding: FragmentKerusakanBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -37,19 +37,19 @@ class RiwayatPekerjaanFragment : Fragment(), MainAdapter.DataCallback  {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentRiwayatPekerjaanBinding.inflate(inflater, container, false)
+        _binding = FragmentKerusakanBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvRiwayat.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvRiwayat.setHasFixedSize(true)
+        binding.rvKerusakan.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvKerusakan.setHasFixedSize(true)
 
-        query = myReference.orderByChild("status").equalTo("FINISH")
+        query = myReference.orderByChild("status").equalTo("KERUSAKAN")
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -64,18 +64,17 @@ class RiwayatPekerjaanFragment : Fragment(), MainAdapter.DataCallback  {
             }
         })
 
-
         val options = FirebaseRecyclerOptions.Builder<Data>()
             .setQuery(query, Data::class.java)
             .build()
 
-        adapter = MainAdapter(options, this@RiwayatPekerjaanFragment)
-        binding.rvRiwayat.adapter = adapter
+        adapter = MainAdapter(options, this@KerusakanFragment)
+        binding.rvKerusakan.adapter = adapter
     }
 
     override fun onStart() {
         super.onStart()
-        binding.rvRiwayat.recycledViewPool.clear()
+        binding.rvKerusakan.recycledViewPool.clear()
         adapter.startListening()
     }
 

@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".riwayatperbaikan.RiwayatPekerjaanFragment">
+    tools:context=".home.tabs.ProgressFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvRiwayat"
+        android:id="@+id/rvProgress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/card_view_main"/>
@@ -17,5 +17,5 @@
         android:layout_height="290dp"
         android:layout_gravity="center"
         android:visibility="invisible"
-        android:src="@drawable/no_data_history"/>
+        android:src="@drawable/no_data_progress"/>
 </FrameLayout>

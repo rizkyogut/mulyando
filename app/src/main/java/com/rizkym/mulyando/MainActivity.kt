@@ -24,8 +24,10 @@ import com.rizkym.mulyando.auth.CreatedTeknisiActivity
 import com.rizkym.mulyando.bantuan.BantuanFragment
 import com.rizkym.mulyando.databinding.ActivityMainBinding
 import com.rizkym.mulyando.home.HomeFragment
+import com.rizkym.mulyando.home.tabs.ProgressFragment
 import com.rizkym.mulyando.model.Teknisi
 import com.rizkym.mulyando.profile.ProfileFragment
+import com.rizkym.mulyando.riwayatperbaikan.RiwayatPekerjaanFragment
 import com.rizkym.mulyando.setting.SettingFragment
 import com.rizkym.mulyando.utils.setImageBackground
 import com.rizkym.mulyando.utils.setImageProfile
@@ -108,8 +110,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.nav_riwayat_pekerjaan -> {
-                Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
-                return true
+                val riwayatFragment = RiwayatPekerjaanFragment()
+                title = resources.getString(R.string.riwayat_pekerjaan)
+                show(riwayatFragment, title)
             }
 
             R.id.nav_bantuan -> {
@@ -127,23 +130,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.top_app_bar, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.notificationMenu -> {
-                Toast.makeText(applicationContext, "Hello", Toast.LENGTH_LONG).show()
-                true
-            }
-
-            else -> true
-        }
     }
 
     private fun show(fragment: Fragment, title: String?) {

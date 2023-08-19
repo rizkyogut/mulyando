@@ -57,5 +57,8 @@
     <string name="status">Status</string>
     <string name="test">TEST</string>
     <string name="perbaikan_selesai">Perbaikan Selesai</string>
+    <string name="no_data">No Data</string>
+    <string name="progress">Progress</string>
+    <string name="sign_up">Sign Up</string>
 
 </resources>

@@ -226,7 +226,7 @@
                 <TextView
                     android:id="@+id/tvPerbaikan"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="28dp"
                     android:layout_marginTop="24dp"
                     android:textAppearance="@style/subText" />
@@ -316,6 +316,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <FrameLayout
+            android:id="@+id/bottom"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="8dp"
@@ -332,6 +333,7 @@
                 android:background="@color/md_theme_light_surfaceTint"
                 android:gravity="start|center"
                 android:padding="18dp"
+                android:visibility="visible"
                 android:text="@string/inputPerbaikan"
                 android:textAppearance="@style/defaultTextBold"
                 android:textColor="@color/white" />

@@ -16,5 +16,6 @@ data class Data(
 	val status: String? = null,
 	val timeCreated: String? = null,
     val user_timeCreated: String? = null,
+    val perbaikan: Perbaikan? = null
 ) : Parcelable
 

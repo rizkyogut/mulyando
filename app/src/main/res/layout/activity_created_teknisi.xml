@@ -76,7 +76,7 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="24dp"
         android:backgroundTint="@color/black"
-        android:text="@string/sign_in"
+        android:text="@string/sign_up"
         android:textAppearance="@style/button_text"
         app:cornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"

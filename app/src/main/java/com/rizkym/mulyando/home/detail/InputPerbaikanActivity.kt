@@ -167,6 +167,7 @@ class InputPerbaikanActivity : AppCompatActivity() {
             }
         }
 
+        //Update status
         val updates = HashMap<String, Any>()
         updates["status"] = "COMPLETED"
 
@@ -177,6 +178,7 @@ class InputPerbaikanActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 showLoading(false)
+
                 finish()
             } else {
                 Toast.makeText(
