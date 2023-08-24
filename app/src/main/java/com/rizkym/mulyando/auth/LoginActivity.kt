@@ -1,4 +1,4 @@
-package com.rizkym.mulyando
+package com.rizkym.mulyando.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +14,9 @@ import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.rizkym.mulyando.MainActivity
 import com.rizkym.mulyando.databinding.ActivityLoginBinding
 import java.util.concurrent.TimeUnit
-
 
 class LoginActivity : AppCompatActivity() {
 
@@ -36,9 +36,12 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         binding.button.setOnClickListener {
+
             phoneNumber = binding.textPhone.text?.trim().toString()
 
-            if (phoneNumber.isNotEmpty()) {
+            if (phoneNumber.length >= 9) {
+
+                showLoading(true)
                 phoneNumber = "+62$phoneNumber"
 
                 val options = PhoneAuthOptions.newBuilder(auth)
@@ -50,6 +53,10 @@ class LoginActivity : AppCompatActivity() {
                 PhoneAuthProvider.verifyPhoneNumber(options)
 
             } else {
+                Toast.makeText(this, "Phone number should be 9 digit or more", Toast.LENGTH_SHORT).show()
+            }
+
+            if (phoneNumber.isEmpty()){
                 Toast.makeText(this, "Please Enter the Number", Toast.LENGTH_SHORT).show()
             }
         }
@@ -124,6 +131,8 @@ class LoginActivity : AppCompatActivity() {
                     }
                     // Update UI
                 }
+
+                showLoading(false)
             }
     }
 
@@ -131,10 +140,7 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (auth.currentUser != null) {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

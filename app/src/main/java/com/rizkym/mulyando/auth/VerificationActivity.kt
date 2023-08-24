@@ -1,7 +1,6 @@
-package com.rizkym.mulyando
+package com.rizkym.mulyando.auth
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,23 +9,28 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.auth.R
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.rizkym.mulyando.MainActivity
 import com.rizkym.mulyando.databinding.ActivityVerificationBinding
 import java.util.concurrent.TimeUnit
 
 class VerificationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVerificationBinding
+
     lateinit var auth: FirebaseAuth
+    private var user: FirebaseUser? = null
 
     private lateinit var inputOTP1: EditText
     private lateinit var inputOTP2: EditText
@@ -44,22 +48,25 @@ class VerificationActivity : AppCompatActivity() {
         binding = ActivityVerificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        OTP = intent.getStringExtra("OTP").toString()
+        OTP = intent.getStringExtra("OTP")!!
         resendToken = intent.getParcelableExtra("resendToken")!!
         phoneNumber = intent.getStringExtra("phoneNumber")!!
 
         auth = FirebaseAuth.getInstance()
+        user = Firebase.auth.currentUser
 
         initView()
 
         binding.resendOTP.setOnClickListener {
 
+            showLoading(true)
+
             val options = PhoneAuthOptions.newBuilder(auth)
-                .setPhoneNumber(phoneNumber)       // Phone number to verify
-                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(this)                 // Activity (for callback binding)
+                .setPhoneNumber(phoneNumber)                 // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS)   // Timeout and unit
+                .setActivity(this)                          // Activity (for callback binding)
                 .setCallbacks(callbacks)
-                .setForceResendingToken(resendToken)// OnVerificationStateChangedCallbacks
+                .setForceResendingToken(resendToken)       // OnVerificationStateChangedCallbacks
                 .build()
             PhoneAuthProvider.verifyPhoneNumber(options)
 
@@ -73,28 +80,29 @@ class VerificationActivity : AppCompatActivity() {
         }
 
         binding.button.setOnClickListener {
-            val otp = (inputOTP1.text.toString() + inputOTP2.text.toString() + inputOTP3.text.toString()
-                    + inputOTP4.text.toString() + inputOTP5.text.toString() + inputOTP6.text.toString())
 
-            if (otp.length != 6){
-                Toast.makeText(this, "Please Enter Correct OTP", Toast.LENGTH_SHORT).show()
-            }
+            showLoading(true)
 
-            if (otp.isNotEmpty()) {
+            val otp =
+                (inputOTP1.text.toString() + inputOTP2.text.toString() + inputOTP3.text.toString()
+                        + inputOTP4.text.toString() + inputOTP5.text.toString() + inputOTP6.text.toString())
+
+            if (otp.length == 6) {
                 val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(
                     OTP, otp
                 )
                 signInWithPhoneAuthCredential(credential)
             } else {
-                Toast.makeText(this, "Please Enter OTP", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please Enter Correct OTP", Toast.LENGTH_SHORT).show()
             }
 
-            if (otp.length != 6){
-                Toast.makeText(this, "Please Enter Correct OTP", Toast.LENGTH_SHORT).show()
+            if (otp.isEmpty()) {
+                Toast.makeText(this, "Please Enter OTP", Toast.LENGTH_SHORT).show()
             }
         }
 
     }
+
     private fun initView() {
         inputOTP1 = binding.otpEditText1
         inputOTP2 = binding.otpEditText2
@@ -168,6 +176,7 @@ class VerificationActivity : AppCompatActivity() {
             // Save verification ID and resending token so we can use them later
             OTP = verificationId
             resendToken = token
+            showLoading(false)
         }
     }
 
@@ -177,19 +186,28 @@ class VerificationActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Toast.makeText(this, "Authenticate Successfully", Toast.LENGTH_SHORT).show()
-                    intentMain()
+                    intent()
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.d("TAG", "signInWithPhoneAuthCredential: ${task.exception.toString()}")
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
+                        Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
                     // Update UI
                 }
+
+                showLoading(false)
             }
     }
 
-    private fun intentMain() {
-        startActivity(Intent(this, MainActivity::class.java))
+    private fun intent() {
+        val intent = Intent(this@VerificationActivity, MainActivity::class.java)
+        intent.putExtra("phoneNumber", phoneNumber)
+        startActivity(intent)
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
