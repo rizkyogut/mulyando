@@ -33,13 +33,15 @@ gh repo clone rizkyogut/mulyando
 ### Login
 <p align="left">
   <img src="https://github.com/rizkyogut/mulyando/assets/98185052/78704218-f0da-4328-a582-095505ce7e6d" width="200">
-  <img src="https://github.com/rizkyogut/mulyando/assets/98185052/360d179f-246b-40f9-a173-5d25268a3aaa" width="200">
+  <img src="https://github.com/rizkyogut/mulyando/assets/98185052/8bca8bc9-298f-4a52-a88d-4484cd146a7e" width="200">
+
 </p>
 
 ### Created Teknisi
 <p align="left">
-  <img src="https://github.com/rizkyogut/mulyando/assets/98185052/4fcc557c-5519-4014-b6d7-772b602bef42" width="200">
-  <img src="https://github.com/rizkyogut/mulyando/assets/98185052/c99fb9a8-1c66-4480-a3d3-66732883e012" width="200">
+  <img src="https://github.com/rizkyogut/mulyando/assets/98185052/b542418b-a7bf-4066-b3df-d2eeedb57549" width="200">
+  <img src="https://github.com/rizkyogut/mulyando/assets/98185052/df47d8fe-57b9-47f9-8b16-f3af5d65b94b" width="200">
+
 </p>
 
 ### Menu Utama
